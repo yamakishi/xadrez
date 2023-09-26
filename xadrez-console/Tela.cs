@@ -12,59 +12,71 @@ namespace xadrez
 {
     class Tela
     {
-        public static void imprimirPartida(PartidadeXadrez partida)
+
+        public static void imprimirPartida(PartidaDeXadrez partida)
         {
             imprimirTabuleiro(partida.tab);
             Console.WriteLine();
             imprimirPecasCapturadas(partida);
             Console.WriteLine();
-            Console.Write("\nTurno: " + partida.turno);
-            Console.Write("\nAguardando jogada: " + partida.jogadorAtual);
-            if(partida.xeque)
+            Console.WriteLine("Turno: " + partida.turno);
+            if (!partida.terminada)
             {
-                Console.WriteLine();
-                Console.WriteLine("XEQUE!");
+                Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
+                if (partida.xeque)
+                {
+                    Console.WriteLine("XEQUE!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("XEQUEMATE!");
+                Console.WriteLine("Vencedor: " + partida.jogadorAtual);
             }
         }
 
-        public static void imprimirPecasCapturadas(PartidadeXadrez partida)
+        public static void imprimirPecasCapturadas(PartidaDeXadrez partida)
         {
-            Console.WriteLine("Peças capturadas: ");
-            Console.Write("\nBrancas: ");
+            Console.WriteLine("Peças capturadas:");
+            Console.Write("Brancas: ");
             imprimirConjunto(partida.pecasCapturadas(Cor.Branca));
-            Console.Write("\nPretas: ");
+            Console.WriteLine();
+            Console.Write("Pretas: ");
             ConsoleColor aux = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
             imprimirConjunto(partida.pecasCapturadas(Cor.Preta));
             Console.ForegroundColor = aux;
+            Console.WriteLine();
         }
 
         public static void imprimirConjunto(HashSet<Peca> conjunto)
         {
-            Console.Write("[ ");
+            Console.Write("[");
             foreach (Peca x in conjunto)
             {
-                Console.Write(x + " - ");
+                Console.Write(x + " ");
             }
-            Console.Write(" ]");
+            Console.Write("]");
         }
 
         public static void imprimirTabuleiro(Tabuleiro tab)
         {
-            for (int i=0; i<tab.linhas; i++)
+
+            for (int i = 0; i < tab.linhas; i++)
             {
                 Console.Write(8 - i + " ");
-                for (int j=0; j<tab.colunas; j++)
+                for (int j = 0; j < tab.colunas; j++)
                 {
                     imprimirPeca(tab.peca(i, j));
                 }
-
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
         }
-        public static void imprimirTabuleiro(Tabuleiro tab, bool[,] posicoesPossiveis)
+
+        public static void imprimirTabuleiro(Tabuleiro tab, bool[,] posicoePossiveis)
         {
+
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
 
@@ -73,7 +85,7 @@ namespace xadrez
                 Console.Write(8 - i + " ");
                 for (int j = 0; j < tab.colunas; j++)
                 {
-                    if (posicoesPossiveis[i, j])
+                    if (posicoePossiveis[i, j])
                     {
                         Console.BackgroundColor = fundoAlterado;
                     }
@@ -84,7 +96,6 @@ namespace xadrez
                     imprimirPeca(tab.peca(i, j));
                     Console.BackgroundColor = fundoOriginal;
                 }
-
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
@@ -95,12 +106,13 @@ namespace xadrez
         {
             string s = Console.ReadLine();
             char coluna = s[0];
-            int linha= int.Parse(s[1] + "");
+            int linha = int.Parse(s[1] + "");
             return new PosicaoXadrez(coluna, linha);
         }
 
         public static void imprimirPeca(Peca peca)
         {
+
             if (peca == null)
             {
                 Console.Write("- ");
@@ -121,5 +133,6 @@ namespace xadrez
                 Console.Write(" ");
             }
         }
+
     }
 }

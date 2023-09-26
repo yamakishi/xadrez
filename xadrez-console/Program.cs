@@ -11,10 +11,11 @@ namespace xadrez_console
 
             try
             {
-                PartidadeXadrez partida = new PartidadeXadrez();
+                PartidaDeXadrez partida = new PartidaDeXadrez();
 
                 while (!partida.terminada)
                 {
+
                     try
                     {
                         Console.Clear();
@@ -30,7 +31,8 @@ namespace xadrez_console
                         Console.Clear();
                         Tela.imprimirTabuleiro(partida.tab, posicoesPossiveis);
 
-                        Console.Write("\nDestino: ");
+                        Console.WriteLine();
+                        Console.Write("Destino: ");
                         Posicao destino = Tela.lerPosicaoXadrez().toPosicao();
                         partida.validarPosicaoDeDestino(origem, destino);
 
@@ -42,13 +44,15 @@ namespace xadrez_console
                         Console.ReadLine();
                     }
                 }
+                Console.Clear();
+                Tela.imprimirPartida(partida);
             }
             catch (TabuleiroException e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            Console.WriteLine();
+            Console.ReadLine();
         }
     }
 }
